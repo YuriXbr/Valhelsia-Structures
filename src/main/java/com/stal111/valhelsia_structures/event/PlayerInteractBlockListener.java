@@ -24,7 +24,7 @@ public class PlayerInteractBlockListener {
         ItemStack stack = event.getItemStack();
         BlockState state = world.getBlockState(pos);
         if (!world.isRemote()) {
-            if (state.getBlock() == ModBlocks.SPECIAL_SPAWNER.getBlock()) {
+            if (state.getBlock() == ModBlocks.SPECIAL_SPAWNER.get().getBlock()) {
                 if (stack.getItem() instanceof SpawnEggItem) {
                     TileEntity tileentity = world.getTileEntity(pos);
                     if (tileentity instanceof SpecialMobSpawnerTileEntity) {

@@ -9,7 +9,7 @@ import net.minecraft.util.WeightedRandom;
  * Valhelsia Structures - com.stal111.valhelsia_structures.utils.WeightedSpecialSpawnerEntity
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4
  * @since 2020-03-22
  */
 public class WeightedSpecialSpawnerEntity extends WeightedRandom.Item {

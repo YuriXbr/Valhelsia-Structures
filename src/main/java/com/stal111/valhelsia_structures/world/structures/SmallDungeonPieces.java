@@ -26,15 +26,12 @@ import java.util.List;
  * Valhelsia Structures - com.stal111.valhelsia_structures.world.structures.SmallDungeonPieces
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4
  * @since 2020-03-22
  */
 public class SmallDungeonPieces {
 
-    private static boolean isRegistered = false;
-
     public static void register() {
-        if (!isRegistered) {
             JigsawManager.REGISTRY.register(
                     new JigsawPattern(new ResourceLocation(ValhelsiaStructures.MOD_ID, "dungeon1/entrances"),
                             new ResourceLocation("empty"),
@@ -54,13 +51,9 @@ public class SmallDungeonPieces {
 
             JigsawManager.REGISTRY.register(
                     new JigsawPattern(new ResourceLocation(ValhelsiaStructures.MOD_ID, "dungeon1/side_rooms"), new ResourceLocation("empty"), ImmutableList.of(Pair.of(new ValhelsiaSingleJigsawPiece(ValhelsiaStructures.MOD_ID + ":dungeon1/side_room"), 1), Pair.of(new ValhelsiaSingleJigsawPiece(ValhelsiaStructures.MOD_ID + ":dungeon1/side_room1"), 1)), JigsawPattern.PlacementBehaviour.RIGID));
-
-            isRegistered = true;
-        }
     }
 
     public static void generate(ChunkGenerator<?> generator, TemplateManager templateManager, BlockPos position, List<StructurePiece> pieces, SharedSeedRandom random) {
-        register();
         JigsawManager.func_214889_a(new ResourceLocation(ValhelsiaStructures.MOD_ID, "dungeon1/entrances"), 7, SmallDungeonPiece::new, generator, templateManager, position, pieces, random);
     }
 

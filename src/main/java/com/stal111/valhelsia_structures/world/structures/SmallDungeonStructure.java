@@ -2,6 +2,7 @@ package com.stal111.valhelsia_structures.world.structures;
 
 import com.mojang.datafixers.Dynamic;
 import com.stal111.valhelsia_structures.ValhelsiaStructures;
+import com.stal111.valhelsia_structures.config.StructureGenConfig;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -21,7 +22,7 @@ import java.util.function.Function;
  * Valhelsia Structures - com.stal111.valhelsia_structures.world.structures.SmallDungeonStructure
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4
  * @since 2020-03-22
  */
 public class SmallDungeonStructure extends AbstractValhelsiaStructure {
@@ -29,12 +30,10 @@ public class SmallDungeonStructure extends AbstractValhelsiaStructure {
     public static final String FULL_NAME = ValhelsiaStructures.MOD_ID + ":" + SHORT_NAME;
 
     private static final int CHUNK_RADIUS = 3;
-    private static final int FEATURE_DISTANCE = 35;
-    private static final int FEATURE_SEPARATION = 8;
     private static final int SEED_MODIFIER = 14357670;
 
-    public SmallDungeonStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> deserialize) {
-        super(deserialize);
+    public SmallDungeonStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory) {
+        super(configFactory, SHORT_NAME);
     }
 
     @Override
@@ -59,12 +58,17 @@ public class SmallDungeonStructure extends AbstractValhelsiaStructure {
 
     @Override
     protected int getFeatureDistance(ChunkGenerator<?> generator) {
-        return FEATURE_DISTANCE;
+        return StructureGenConfig.SMALL_DUNGEON_DISTANCE.get();
     }
 
     @Override
     protected int getFeatureSeparation(ChunkGenerator<?> generator) {
-        return FEATURE_SEPARATION;
+        return StructureGenConfig.SMALL_DUNGEON_SEPARATION.get();
+    }
+
+    @Override
+    protected double getSpawnChance() {
+        return StructureGenConfig.SMALL_DUNGEON_SPAWN_CHANCE.get();
     }
 
     @Override

@@ -20,7 +20,7 @@ public class SpecialMobSpawnerTileEntity extends TileEntity implements ITickable
     private final SpecialAbstractSpawner spawnerLogic = new SpecialAbstractSpawner() {
         public void broadcastEvent(int id) {
             assert SpecialMobSpawnerTileEntity.this.world != null;
-            SpecialMobSpawnerTileEntity.this.world.addBlockEvent(SpecialMobSpawnerTileEntity.this.pos, ModBlocks.SPECIAL_SPAWNER.getBlock(), id, 0);
+            SpecialMobSpawnerTileEntity.this.world.addBlockEvent(SpecialMobSpawnerTileEntity.this.pos, ModBlocks.SPECIAL_SPAWNER.get().getBlock(), id, 0);
         }
 
         @Override
@@ -45,7 +45,7 @@ public class SpecialMobSpawnerTileEntity extends TileEntity implements ITickable
     };
 
     public SpecialMobSpawnerTileEntity() {
-        super(ModTileEntities.SPECIAL_SPAWNER.getTileEntity());
+        super(ModTileEntities.SPECIAL_SPAWNER.get());
     }
 
     @Override

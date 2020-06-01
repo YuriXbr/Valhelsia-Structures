@@ -2,12 +2,13 @@ package com.stal111.valhelsia_structures.world.structures;
 
 import com.mojang.datafixers.Dynamic;
 import com.stal111.valhelsia_structures.ValhelsiaStructures;
+import com.stal111.valhelsia_structures.config.StructureGenConfig;
+import com.stal111.valhelsia_structures.utils.StructureUtils;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.MarginedStructureStart;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -21,7 +22,7 @@ import java.util.function.Function;
  * Valhelsia Structures - com.stal111.valhelsia_structures.world.structures.ForgeStructure
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4
  * @since 2020-03-22
  */
 public class ForgeStructure extends AbstractValhelsiaStructure {
@@ -29,12 +30,10 @@ public class ForgeStructure extends AbstractValhelsiaStructure {
     public static final String FULL_NAME = ValhelsiaStructures.MOD_ID + ":" + SHORT_NAME;
 
     private static final int CHUNK_RADIUS = 2;
-    private static final int FEATURE_DISTANCE = 31;
-    private static final int FEATURE_SEPARATION = 8;
     private static final int SEED_MODIFIER = 12857691;
 
-    public ForgeStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> deserialize) {
-        super(deserialize);
+    public ForgeStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory) {
+        super(configFactory, SHORT_NAME);
     }
 
     @Override
@@ -59,12 +58,17 @@ public class ForgeStructure extends AbstractValhelsiaStructure {
 
     @Override
     protected int getFeatureDistance(ChunkGenerator<?> generator) {
-        return FEATURE_DISTANCE;
+        return StructureGenConfig.FORGE_DISTANCE.get();
     }
 
     @Override
     protected int getFeatureSeparation(ChunkGenerator<?> generator) {
-        return FEATURE_SEPARATION;
+        return StructureGenConfig.FORGE_SEPARATION.get();
+    }
+
+    @Override
+    protected double getSpawnChance() {
+        return StructureGenConfig.FORGE_SPAWN_CHANCE.get();
     }
 
     public static class Start extends MarginedStructureStart {
@@ -75,31 +79,9 @@ public class ForgeStructure extends AbstractValhelsiaStructure {
         @Override
         public void init(@Nonnull ChunkGenerator<?> generator, @Nonnull TemplateManager templateManager, int chunkX, int chunkZ, @Nonnull Biome biome) {
             Rotation rotation = Rotation.values()[this.rand.nextInt(Rotation.values().length)];
-            int xOffset = 16;
-            int zOffset = 16;
-            if (rotation == Rotation.CLOCKWISE_90) {
-                xOffset *= -1;
-            } else if (rotation == Rotation.CLOCKWISE_180) {
-                xOffset *= -1;
-                zOffset *= -1;
-            } else if (rotation == Rotation.COUNTERCLOCKWISE_90) {
-                zOffset *= -1;
-            }
-
-            int xCenter = (chunkX << 4) + 7;
-            int zCenter = (chunkZ << 4) + 7;
-
-            int i1 = generator.func_222531_c(xCenter, zCenter, Heightmap.Type.WORLD_SURFACE_WG);
-            int j1 = generator.func_222531_c(xCenter, zCenter + zOffset, Heightmap.Type.WORLD_SURFACE_WG);
-            int k1 = generator.func_222531_c(xCenter + xOffset, zCenter, Heightmap.Type.WORLD_SURFACE_WG);
-            int l1 = generator.func_222531_c(xCenter + xOffset, zCenter + zOffset, Heightmap.Type.WORLD_SURFACE_WG);
-            int minHeight = Math.min(Math.min(i1, j1), Math.min(k1, l1));
-            //int maxHeight = Math.max(Math.max(i1, j1), Math.max(k1, l1));
-            //if (Math.abs(maxHeight - minHeight) <= 2 && minHeight >= 60) {
-                BlockPos blockpos = new BlockPos(chunkX * 16, minHeight - 1, chunkZ * 16);
-                ForgePieces.generate(generator, templateManager, blockpos, this.components, this.rand);
-                this.recalculateStructureSize();
-            //}
+            BlockPos position = StructureUtils.getSurfaceStructurePosition(generator, CHUNK_RADIUS, rotation, chunkX, chunkZ);
+            ForgePieces.generate(generator, templateManager, position, this.components, this.rand);
+            this.recalculateStructureSize();
         }
     }
 

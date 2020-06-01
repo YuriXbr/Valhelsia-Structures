@@ -15,6 +15,7 @@ public class ClientProxy implements IProxy {
     @Override
     public void init() {
         ClientRegistry.bindTileEntitySpecialRenderer(SpecialMobSpawnerTileEntity.class, new SpecialMobSpawnerTileEntityRenderer());
+
     }
 
     @Override

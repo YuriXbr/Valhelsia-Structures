@@ -33,7 +33,7 @@ import java.util.function.Function;
  * Valhelsia Structures - com.stal111.valhelsia_structures.block.SpecialAbstractSpawner
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4
  * @since 2019-10-31
  */
 public abstract class SpecialAbstractSpawner {

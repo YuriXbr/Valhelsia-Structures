@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
  * Valhelsia Structures - com.stal111.valhelsia_structures.block.SpecialSpawnerBlock
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4
  * @since 2019-10-31
  */
 public class SpecialSpawnerBlock extends ContainerBlock {

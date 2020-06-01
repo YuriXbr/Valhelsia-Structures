@@ -23,7 +23,7 @@ import java.util.Random;
  * (which ignore air blocks rather than carve them out) and add our own replacement processors.
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4
  * @since 2019-10-31
  */
 public class ValhelsiaSingleJigsawPiece extends SingleJigsawPiece {
@@ -69,8 +69,8 @@ public class ValhelsiaSingleJigsawPiece extends SingleJigsawPiece {
         placementSettings.setIgnoreEntities(false);
         placementSettings.addProcessor(Processors.RED_GLASS_AND_STRUCTURE_BLOCK);
         placementSettings.addProcessor(JigsawReplacementStructureProcessor.INSTANCE);
-        placementSettings.addProcessor(Processors.OBSIDIAN);
-        //Processors.PIECE_PROCESSOR_LIST.forEach(placementSettings::addProcessor);
+        placementSettings.addProcessor(Processors.OBSIDIAN_REPLACEMENT_PROCESSOR);
+        placementSettings.addProcessor(Processors.STONE_REPLACEMENT_PROCESSOR);
         this.processors.forEach(placementSettings::addProcessor);
         this.getPlacementBehaviour().getStructureProcessors().forEach(placementSettings::addProcessor);
         return placementSettings;

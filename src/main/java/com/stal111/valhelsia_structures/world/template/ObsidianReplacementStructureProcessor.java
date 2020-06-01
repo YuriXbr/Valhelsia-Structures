@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
  * This processor replaces obsidian blocks inside structures with the special spawner.
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4
  * @since 2020-03-22
  */
 public class ObsidianReplacementStructureProcessor extends StructureProcessor {
@@ -33,7 +33,7 @@ public class ObsidianReplacementStructureProcessor extends StructureProcessor {
         if (block != Blocks.OBSIDIAN) {
             return blockInfo;
         } else {
-            return new Template.BlockInfo(blockInfo.pos, ModBlocks.SPECIAL_SPAWNER.getBlock().getDefaultState(), null);
+            return new Template.BlockInfo(blockInfo.pos, ModBlocks.SPECIAL_SPAWNER.get().getBlock().getDefaultState(), null);
         }
     }
 

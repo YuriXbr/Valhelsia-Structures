@@ -5,52 +5,32 @@ import com.stal111.valhelsia_structures.world.structures.*;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
-
-import javax.annotation.Nonnull;
-import java.util.Locale;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 /**
- * ValhelsiaStructure Structures
- * ValhelsiaStructure - com.stal111.valhelsia_structure.init.ModStructures
+ * Structures
+ * Valhelsia Structures - com.stal111.valhelsia_structures.init.ModStructures
  *
  * @author Valhelsia Team
- * @version 0.1
+ * @version 14.0.4
  * @since 2019-10-31
  */
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-@ObjectHolder(ValhelsiaStructures.MOD_ID)
 public class ModStructures {
 
-    // Structures
-    public static final Structure<NoFeatureConfig> SMALL_CASTLE = create(SmallCastleStructure.SHORT_NAME, new SmallCastleStructure(NoFeatureConfig::deserialize));
-    public static final Structure<NoFeatureConfig> TOWER_RUIN = create(TowerRuinStructure.SHORT_NAME, new TowerRuinStructure(NoFeatureConfig::deserialize));
-    public static final Structure<NoFeatureConfig> PLAYER_HOUSE = create(PlayerHouseStructure.SHORT_NAME, new PlayerHouseStructure(NoFeatureConfig::deserialize));
-    public static final Structure<NoFeatureConfig> FORGE = create(ForgeStructure.SHORT_NAME, new ForgeStructure(NoFeatureConfig::deserialize));
-    public static final Structure<NoFeatureConfig> SMALL_DUNGEON = create(SmallDungeonStructure.SHORT_NAME, new SmallDungeonStructure(NoFeatureConfig::deserialize));
+    public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, ValhelsiaStructures.MOD_ID);
 
-    @SubscribeEvent
-    public static void registerStructures(RegistryEvent.Register<Feature<?>> event) {
-        // Register Pieces
-        ModStructurePieces.registerPieces();
+    public static final RegistryObject<Structure<NoFeatureConfig>> CASTLE = register(CastleStructure.SHORT_NAME, new CastleStructure(NoFeatureConfig::deserialize));
+    public static final RegistryObject<Structure<NoFeatureConfig>> CASTLE_RUIN = register(CastleRuinStructure.SHORT_NAME, new CastleRuinStructure(NoFeatureConfig::deserialize));
+    public static final RegistryObject<Structure<NoFeatureConfig>> DESERT_HOUSE = register(DesertHouseStructure.SHORT_NAME, new DesertHouseStructure(NoFeatureConfig::deserialize));
+    public static final RegistryObject<Structure<NoFeatureConfig>> FORGE = register(ForgeStructure.SHORT_NAME, new ForgeStructure(NoFeatureConfig::deserialize));
+    public static final RegistryObject<Structure<NoFeatureConfig>> PLAYER_HOUSE = register(PlayerHouseStructure.SHORT_NAME, new PlayerHouseStructure(NoFeatureConfig::deserialize));
+    public static final RegistryObject<Structure<NoFeatureConfig>> SMALL_DUNGEON = register(SmallDungeonStructure.SHORT_NAME, new SmallDungeonStructure(NoFeatureConfig::deserialize));
+    public static final RegistryObject<Structure<NoFeatureConfig>> TOWER_RUIN = register(TowerRuinStructure.SHORT_NAME, new TowerRuinStructure(NoFeatureConfig::deserialize));
 
-        // Register Structures
-        IForgeRegistry<Feature<?>> registry = event.getRegistry();
-
-        registry.register(SMALL_CASTLE);
-        registry.register(TOWER_RUIN);
-        registry.register(PLAYER_HOUSE);
-        registry.register(FORGE);
-        registry.register(SMALL_DUNGEON);
-    }
-
-    private static @Nonnull <T extends Feature<?>> T create(String name, T feature) {
-        feature.setRegistryName(ValhelsiaStructures.MOD_ID, name.toLowerCase(Locale.ROOT));
-        return feature;
+    private static <T extends Feature<?>> RegistryObject<T> register(String name, T feature) {
+        return FEATURES.register(name, () -> feature);
     }
 }

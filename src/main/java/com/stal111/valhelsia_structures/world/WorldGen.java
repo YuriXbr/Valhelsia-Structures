@@ -1,8 +1,8 @@
 package com.stal111.valhelsia_structures.world;
 
+import com.stal111.valhelsia_structures.config.StructureGenConfig;
 import com.stal111.valhelsia_structures.init.ModStructures;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -10,7 +10,12 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.placement.DungeonRoomConfig;
 import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * World Generation
@@ -22,34 +27,71 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public class WorldGen {
 
+    public static List<Structure<NoFeatureConfig>> structures = new ArrayList<>();
+
     /**
      * Setup World Generation
      */
     public static void setupWorldGen() {
-        // Add Structures to World Generation
-        for (Biome biome : ForgeRegistries.BIOMES) {
 
-            // Globally Blacklisted biomes.
-            if (biome == Biomes.RIVER) {
-                continue;
-            }
+        // This is apparently deprecated but the replacement isn't in yet?
+        // Regardless, this makes the structure additions thread-safe.
+        //noinspection deprecation
+        DeferredWorkQueue.runLater(() -> {
+            Iterator<Biome> biomes = ForgeRegistries.BIOMES.iterator();
+            biomes.forEachRemaining((biome) -> {
+                // Check Blacklist
+                if (!(biome.getCategory() == Biome.Category.RIVER || biome.getCategory() == Biome.Category.OCEAN)) {
+                    // Plains / Forest Structures
+                    if (biome.getCategory() == Biome.Category.PLAINS || biome.getCategory() == Biome.Category.FOREST
+                            || biome.getCategory() == Biome.Category.EXTREME_HILLS || biome.getCategory() == Biome.Category.TAIGA) {
+                        if (biome.getTempCategory() == Biome.TempCategory.MEDIUM && biome.getPrecipitation() == Biome.RainType.RAIN) {
 
-            // Surface Structures
-            if (biome.getCategory() == Biome.Category.PLAINS || biome.getCategory() == Biome.Category.FOREST) {
-                if (biome.getTempCategory() == Biome.TempCategory.MEDIUM && biome.getPrecipitation() == Biome.RainType.RAIN) {
-                    addSurfaceStructure(biome, ModStructures.SMALL_CASTLE);
-                    addSurfaceStructure(biome, ModStructures.TOWER_RUIN);
-                    addSurfaceStructure(biome, ModStructures.PLAYER_HOUSE);
-                    addSurfaceStructure(biome, ModStructures.FORGE);
+                            if (StructureGenConfig.GENERATE_CASTLES.get()) {
+                                addSurfaceStructure(biome, ModStructures.CASTLE.get());
+                                structures.add(ModStructures.CASTLE.get());
+                            }
+
+                            if (StructureGenConfig.GENERATE_CASTLE_RUINS.get()) {
+                                addSurfaceStructure(biome, ModStructures.CASTLE_RUIN.get());
+                                structures.add(ModStructures.CASTLE_RUIN.get());
+                            }
+
+                            if (StructureGenConfig.GENERATE_FORGES.get()) {
+                                addSurfaceStructure(biome, ModStructures.FORGE.get());
+                                structures.add(ModStructures.FORGE.get());
+                            }
+
+                            if (StructureGenConfig.GENERATE_PLAYER_HOUSES.get()) {
+                                addSurfaceStructure(biome, ModStructures.PLAYER_HOUSE.get());
+                                structures.add(ModStructures.PLAYER_HOUSE.get());
+                            }
+
+                            if (StructureGenConfig.GENERATE_TOWER_RUINS.get()) {
+                                addSurfaceStructure(biome, ModStructures.TOWER_RUIN.get());
+                                structures.add(ModStructures.TOWER_RUIN.get());
+                            }
+                        }
+                    }
+
+                    // Desert Structures
+                    if (biome.getCategory() == Biome.Category.DESERT && biome.getPrecipitation() == Biome.RainType.NONE) {
+                        if (StructureGenConfig.GENERATE_DESERT_HOUSES.get()) {
+                            addSurfaceStructure(biome, ModStructures.DESERT_HOUSE.get());
+                            structures.add(ModStructures.DESERT_HOUSE.get());
+                        }
+                    }
+
+                    // Dungeons
+                    if (biome.getCategory() != Biome.Category.NETHER && biome.getCategory() != Biome.Category.THEEND) {
+                        if (StructureGenConfig.GENERATE_SMALL_DUNGEONS.get()) {
+                            addUndergroundStructure(biome, ModStructures.SMALL_DUNGEON.get());
+                            structures.add(ModStructures.SMALL_DUNGEON.get());
+                        }
+                    }
                 }
-            }
-
-            // Underground Structures
-            if (biome.getCategory() != Biome.Category.NETHER && biome.getCategory() != Biome.Category.THEEND) {
-                // TODO: Prevent the structure being added to The Midnight or other modded non-overworld biomes.
-                addUndergroundStructure(biome, ModStructures.SMALL_DUNGEON);
-            }
-        }
+            });
+        });
     }
 
     /**

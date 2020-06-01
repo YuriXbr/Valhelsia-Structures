@@ -3,24 +3,25 @@ package com.stal111.valhelsia_structures.init;
 import com.stal111.valhelsia_structures.ValhelsiaStructures;
 import com.stal111.valhelsia_structures.tileentity.SpecialMobSpawnerTileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public enum  ModTileEntities {
-    SPECIAL_SPAWNER(TileEntityType.Builder.create(SpecialMobSpawnerTileEntity::new, ModBlocks.SPECIAL_SPAWNER.getBlock()).build(null));
+import java.util.function.Supplier;
 
-    private final TileEntityType<?> tileEntity;
+/**
+ * Tile Entities
+ * Valhelsia Structures - com.stal111.valhelsia_structures.init.ModTileEntities
+ *
+ * @author Valhelsia Team
+ * @version 14.0.4
+ */
+public class ModTileEntities {
+    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, ValhelsiaStructures.MOD_ID);
 
-    ModTileEntities(TileEntityType<?> tileEntity) {
-        this.tileEntity = tileEntity;
-    }
+    public static final RegistryObject<TileEntityType<SpecialMobSpawnerTileEntity>> SPECIAL_SPAWNER = register("special_spawner", () -> TileEntityType.Builder.create(SpecialMobSpawnerTileEntity::new, ModBlocks.SPECIAL_SPAWNER.get()).build(null));
 
-    public String getName() {
-        return String.valueOf(this).toLowerCase();
-    }
-
-    public TileEntityType<?> getTileEntity() {
-        if (tileEntity.getRegistryName() == null) {
-            tileEntity.setRegistryName(ValhelsiaStructures.MOD_ID, getName());
-        }
-        return tileEntity;
+    private static <T extends TileEntityType<?>> RegistryObject<T> register(String name, Supplier<T> tileEntity) {
+        return TILE_ENTITIES.register(name, tileEntity);
     }
 }
