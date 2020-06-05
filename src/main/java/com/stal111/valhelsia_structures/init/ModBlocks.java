@@ -2,7 +2,10 @@ package com.stal111.valhelsia_structures.init;
 
 import com.stal111.valhelsia_structures.ValhelsiaStructures;
 import com.stal111.valhelsia_structures.ValhelsiaStructuresItemGroups;
-import com.stal111.valhelsia_structures.block.*;
+import com.stal111.valhelsia_structures.block.BrazierBlock;
+import com.stal111.valhelsia_structures.block.PostBlock;
+import com.stal111.valhelsia_structures.block.SpecialSpawnerBlock;
+import com.stal111.valhelsia_structures.block.ValhelsiaStoneBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -33,8 +36,8 @@ public class ModBlocks {
     public static final RegistryObject<PostBlock> ACACIA_POST = register("acacia_post", new PostBlock(Block.Properties.from(Blocks.ACACIA_LOG).harvestTool(ToolType.AXE)));
     public static final RegistryObject<PostBlock> DARK_OAK_POST = register("dark_oak_post", new PostBlock(Block.Properties.from(Blocks.DARK_OAK_LOG).harvestTool(ToolType.AXE)));
     public static final RegistryObject<GlassBlock> METAL_FRAMED_GLASS = register("metal_framed_glass", new GlassBlock(Block.Properties.from(Blocks.GLASS).harvestTool(ToolType.PICKAXE)));
-    public static final RegistryObject<PaneBlock> METAL_FRAMED_GLASS_PANE = register("metal_framed_glass_pane", new ValhelsiaPaneBlock(Block.Properties.from(Blocks.GLASS_PANE).harvestTool(ToolType.PICKAXE)));
-    public static final RegistryObject<PaneBlock> PAPER_WALL = register("paper_wall", new ValhelsiaPaneBlock(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0.3F).harvestTool(ToolType.AXE).sound(SoundType.CLOTH)));
+    public static final RegistryObject<PaneBlock> METAL_FRAMED_GLASS_PANE = register("metal_framed_glass_pane", new PaneBlock(Block.Properties.from(Blocks.GLASS_PANE).harvestTool(ToolType.PICKAXE)));
+    public static final RegistryObject<PaneBlock> PAPER_WALL = register("paper_wall", new PaneBlock(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0.3F).harvestTool(ToolType.AXE).sound(SoundType.CLOTH)));
 
     // Workaround for structures - stone that can't be replaced during later generation steps:
     public static final RegistryObject<Block> STONE = register("stone", new ValhelsiaStoneBlock(() -> Blocks.STONE, Block.Properties.create(Material.ROCK, MaterialColor.STONE).harvestTool(ToolType.PICKAXE).hardnessAndResistance(1.5F, 6.0F)));

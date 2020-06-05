@@ -15,7 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  * Valhelsia Structures - com.stal111.valhelsia_structures.init.ModStructures
  *
  * @author Valhelsia Team
- * @version 14.0.4
+ * @version 14.0.4a
  * @since 2019-10-31
  */
 public class ModStructures {
@@ -29,6 +29,9 @@ public class ModStructures {
     public static final RegistryObject<Structure<NoFeatureConfig>> PLAYER_HOUSE = register(PlayerHouseStructure.SHORT_NAME, new PlayerHouseStructure(NoFeatureConfig::deserialize));
     public static final RegistryObject<Structure<NoFeatureConfig>> SMALL_DUNGEON = register(SmallDungeonStructure.SHORT_NAME, new SmallDungeonStructure(NoFeatureConfig::deserialize));
     public static final RegistryObject<Structure<NoFeatureConfig>> TOWER_RUIN = register(TowerRuinStructure.SHORT_NAME, new TowerRuinStructure(NoFeatureConfig::deserialize));
+
+    // Removed Structures - these prevent crashes related to a vanilla bug.
+    public static final RegistryObject<Structure<NoFeatureConfig>> SMALL_CASTLE = register("small_castle", new RemovedStructure(NoFeatureConfig::deserialize, "small_castle"));
 
     private static <T extends Feature<?>> RegistryObject<T> register(String name, T feature) {
         return FEATURES.register(name, () -> feature);

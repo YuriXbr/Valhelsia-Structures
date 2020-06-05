@@ -22,7 +22,7 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/valhelsiastructures" #o
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="logo.png" #optional
 # A text field displayed in the mod UI
-credits="stal111, Vaelzan" #optional
+credits="Khytwel, stal111, Vaelzan" #optional
 # A text field displayed in the mod UI
 authors="Valhelsia Team" #optional
 # The description text for the mod (multi line!) (#mandatory)

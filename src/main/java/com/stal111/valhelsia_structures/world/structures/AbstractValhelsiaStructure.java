@@ -2,16 +2,19 @@ package com.stal111.valhelsia_structures.world.structures;
 
 import com.mojang.datafixers.Dynamic;
 import com.stal111.valhelsia_structures.ValhelsiaStructures;
+import com.stal111.valhelsia_structures.config.StructureGenConfig;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.OverworldChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.ScatteredStructure;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -25,7 +28,7 @@ import java.util.function.Function;
  * but can be overridden if needed.
  *
  * @author Valhelsia Team
- * @version 14.0.4
+ * @version 14.0.4a
  * @since 2020-03-22
  */
 public abstract class AbstractValhelsiaStructure extends ScatteredStructure<NoFeatureConfig> {
@@ -84,9 +87,12 @@ public abstract class AbstractValhelsiaStructure extends ScatteredStructure<NoFe
 
     @Override
     public boolean hasStartAt(@Nonnull ChunkGenerator<?> generator, @Nonnull Random random, int chunkX, int chunkZ) {
-        // This will need to be changed if we introduce structures for other dimensions, but for now this blacklists anything
-        // that isn't the Overworld:
-        if (!(generator instanceof OverworldChunkGenerator)) {
+
+        // Janky way of getting the world, but ¯\_(ツ)_/¯
+        IWorld world = ObfuscationReflectionHelper.getPrivateValue(ChunkGenerator.class, generator, "field_222540_a");
+        if (world == null || !(world.getDimension().getType() == DimensionType.OVERWORLD)) {
+            // Whitelist only the Overworld.
+            // TODO (VZ): Change this if we introduce structures that should spawn in any other dimension.
             return false;
         }
 
@@ -134,6 +140,6 @@ public abstract class AbstractValhelsiaStructure extends ScatteredStructure<NoFe
         int minHeight = Math.min(Math.min(i1, j1), Math.min(k1, l1));
         int maxHeight = Math.max(Math.max(i1, j1), Math.max(k1, l1));
 
-        return Math.abs(maxHeight - minHeight) <= 3;
+        return Math.abs(maxHeight - minHeight) <= StructureGenConfig.FLATNESS_DELTA.get();
     }
 }

@@ -22,11 +22,14 @@ import java.util.List;
  * Valhelsia Structures - com.stal111.valhelsia_structures.world.WorldGen
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4a
  * @since 2019-10-31
  */
 public class WorldGen {
 
+    /**
+     * List of all structures in the mod that are currently enabled (in any biome).
+     */
     public static List<Structure<NoFeatureConfig>> structures = new ArrayList<>();
 
     /**
@@ -49,27 +52,22 @@ public class WorldGen {
 
                             if (StructureGenConfig.GENERATE_CASTLES.get()) {
                                 addSurfaceStructure(biome, ModStructures.CASTLE.get());
-                                structures.add(ModStructures.CASTLE.get());
                             }
 
                             if (StructureGenConfig.GENERATE_CASTLE_RUINS.get()) {
                                 addSurfaceStructure(biome, ModStructures.CASTLE_RUIN.get());
-                                structures.add(ModStructures.CASTLE_RUIN.get());
                             }
 
                             if (StructureGenConfig.GENERATE_FORGES.get()) {
                                 addSurfaceStructure(biome, ModStructures.FORGE.get());
-                                structures.add(ModStructures.FORGE.get());
                             }
 
                             if (StructureGenConfig.GENERATE_PLAYER_HOUSES.get()) {
                                 addSurfaceStructure(biome, ModStructures.PLAYER_HOUSE.get());
-                                structures.add(ModStructures.PLAYER_HOUSE.get());
                             }
 
                             if (StructureGenConfig.GENERATE_TOWER_RUINS.get()) {
                                 addSurfaceStructure(biome, ModStructures.TOWER_RUIN.get());
-                                structures.add(ModStructures.TOWER_RUIN.get());
                             }
                         }
                     }
@@ -78,7 +76,6 @@ public class WorldGen {
                     if (biome.getCategory() == Biome.Category.DESERT && biome.getPrecipitation() == Biome.RainType.NONE) {
                         if (StructureGenConfig.GENERATE_DESERT_HOUSES.get()) {
                             addSurfaceStructure(biome, ModStructures.DESERT_HOUSE.get());
-                            structures.add(ModStructures.DESERT_HOUSE.get());
                         }
                     }
 
@@ -86,7 +83,6 @@ public class WorldGen {
                     if (biome.getCategory() != Biome.Category.NETHER && biome.getCategory() != Biome.Category.THEEND) {
                         if (StructureGenConfig.GENERATE_SMALL_DUNGEONS.get()) {
                             addUndergroundStructure(biome, ModStructures.SMALL_DUNGEON.get());
-                            structures.add(ModStructures.SMALL_DUNGEON.get());
                         }
                     }
                 }
@@ -107,6 +103,8 @@ public class WorldGen {
                         IFeatureConfig.NO_FEATURE_CONFIG,
                         Placement.NOPE,
                         IPlacementConfig.NO_PLACEMENT_CONFIG));
+
+        structures.add(structure);
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -118,5 +116,7 @@ public class WorldGen {
                         IFeatureConfig.NO_FEATURE_CONFIG,
                         Placement.DUNGEONS,
                         new DungeonRoomConfig(8)));
+
+        structures.add(structure);
     }
 }

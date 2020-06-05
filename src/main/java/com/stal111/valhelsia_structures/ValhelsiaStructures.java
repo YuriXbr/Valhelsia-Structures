@@ -26,7 +26,7 @@ import org.apache.logging.log4j.Logger;
  * Valhelsia Structures - com.stal111.valhelsia_structures.ValhelsiaStructures
  *
  * @author Valhelsia Team
- * @version 14.0.3
+ * @version 14.0.4a
  * @since 2019-10-31
  */
 @Mod(ValhelsiaStructures.MOD_ID)
